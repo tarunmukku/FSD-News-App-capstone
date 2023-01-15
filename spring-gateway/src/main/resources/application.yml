@@ -1,0 +1,31 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000"
+            allowedHeaders: "*"
+            allowedMethods:
+              - GET
+              - POST
+      routes:
+      - id: userModule
+        uri: lb://user-service
+        predicates:
+        - Path=/user/**
+      - id: newsModule
+        uri: lb://news-service
+        predicates:
+        - Path=/news/**
+        
+        
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://host.docker.internal:8761/eureka
